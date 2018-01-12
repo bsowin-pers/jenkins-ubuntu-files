@@ -50,7 +50,7 @@
     "variables": {},
     "resources": [
         {
-            "comments": "Generalized from resource: '/subscriptions/0d5f333d-16e9-44d1-ae79-c28ea1d9cbcc/resourceGroups/Built-for-Template/providers/Microsoft.Compute/virtualMachines/BuiltForTemplate'.",
+            "comments": "Generalized from resource: '/subscriptions/0d5f333d-16e9-44d1-ae79-c28ea1d9cbcc/resourceGroups/Built-for-Template/providers/Microsoft.Compute/virtualMachines/BuiltForTemplate'. Another file change for testing",
             "type": "Microsoft.Compute/virtualMachines",
             "name": "[parameters('virtualMachines_BuiltForTemplate_name')]",
             "apiVersion": "2017-03-30",

@@ -532,7 +532,7 @@
                 "typeHandlerVersion": "2.0",
                 "autoUpgradeMinorVersion": true,
               "settings": {
-                "commandToExecute": ["git clone https://github.com/bsowin-pers/azure_jnkns.git; cd azure_jnkns; sudo sh jenkins_install.sh"]
+                "commandToExecute": "git clone https://github.com/bsowin-pers/azure_jnkns.git; cd azure_jnkns; sudo sh jenkins_install.sh"
                 }
             }
         }

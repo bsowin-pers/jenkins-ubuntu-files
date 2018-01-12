@@ -42,6 +42,10 @@
             "defaultValue": "Port_8443",
             "type": "String"
         },
+        "securityRules_Port_8081_name": {
+            "defaultValue": "Port_8081",
+            "type": "String"
+        },
         "virtualMachines_BuiltForTemplate_id": {
             "defaultValue": "/subscriptions/0d5f333d-16e9-44d1-ae79-c28ea1d9cbcc/resourceGroups/Built-for-Template/providers/Microsoft.Compute/disks/BuiltForTemplate_OsDisk_1_d19b8dac446f44f788807f6e4aa77e0d",
             "type": "String"
@@ -215,6 +219,23 @@
                             "destinationAddressPrefix": "*",
                             "access": "Allow",
                             "priority": 101,
+                            "direction": "Inbound",
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []   
+                        }
+                    },
+                    {
+                        "name": "Port_8081",
+                        "etag": "W/\"2de45763-e2da-4487-b21a-720c2130706d\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "8081",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 102,
                             "direction": "Inbound",
                             "sourceAddressPrefixes": [],
                             "destinationAddressPrefixes": []   
@@ -489,6 +510,29 @@
             ]
         },
         {
+            "comments": "Generalized from resource: '/subscriptions/0d5f333d-16e9-44d1-ae79-c28ea1d9cbcc/resourceGroups/Built-for-Template/providers/Microsoft.Network/networkSecurityGroups/BuiltForTemplate-nsg/securityRules/Port_8081'.",
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "name": "[concat(parameters('networkSecurityGroups_BuiltForTemplate_nsg_name'), '/', parameters('securityRules_Port_8081_name'))]",
+            "apiVersion": "2017-06-01",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "protocol": "TCP",
+                "sourcePortRange": "*",
+                "destinationPortRange": "8081",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 102,
+                "direction": "Inbound",
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_BuiltForTemplate_nsg_name'))]"
+            ]
+        },
+        {
             "comments": "Generalized from resource: '/subscriptions/0d5f333d-16e9-44d1-ae79-c28ea1d9cbcc/resourceGroups/Built-for-Template/providers/Microsoft.Network/virtualNetworks/Built-for-Template-vnet/subnets/default'.",
             "type": "Microsoft.Network/virtualNetworks/subnets",
             "name": "[concat(parameters('virtualNetworks_Built_for_Template_vnet_name'), '/', parameters('subnets_default_name'))]",
@@ -508,7 +552,7 @@
             "apiVersion": "2017-03-30",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-              "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachines_BuiltForTemplate_name'))]"
+              "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_BuiltForTemplate_name'))]"
             ],
             "properties": {
               "publisher": "Microsoft.Azure.Extensions",
@@ -524,7 +568,8 @@
             "apiVersion": "2017-03-30",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachines_BuiltForTemplate_name'))]"
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_BuiltForTemplate_name'))]",
+                "[concat('Microsoft.Compute/virtualMachines/',parameters('virtualMachines_BuiltForTemplate_name'),'/extensions/DockerExtension')]"
             ],
             "properties":{
                 "publisher": "Microsoft.Azure.Extensions",
@@ -532,7 +577,7 @@
                 "typeHandlerVersion": "2.0",
                 "autoUpgradeMinorVersion": true,
               "settings": {
-                "commandToExecute": ["git clone https://github.com/bsowin-pers/jenkins_docker.git; docker swarm init; cd jenkins_docker; docker stack deploy -c jenkins.yml jenkins;"]
+                "commandToExecute": "git clone https://github.com/bsowin-pers/jenkins_docker.git; docker swarm init; echo \"admin\" | docker secret create jenkins-user -; echo \"admin\" | docker secret create jenkins-pass -; cd jenkins_docker; docker stack deploy -c jenkins.yml jenkins;"
                 }
             }
         }

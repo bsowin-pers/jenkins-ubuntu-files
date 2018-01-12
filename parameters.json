@@ -32,6 +32,9 @@
         "securityRules_default_Port_8443_name": {
             "value": null
         },
+        "securityRules_default_Port_8081_name": {
+            "value": null
+        },
         "virtualMachines_BuiltForTemplate_id": {
             "value": null
         }
